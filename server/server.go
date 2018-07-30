@@ -15,6 +15,7 @@ func main() {
 		log.Fatalf("Listen error: %s\n", err)
 	}
 
+	// 计数client连接
 	accepted := 0 
 	for {
 		conn, err := ln.Accept()
@@ -28,6 +29,7 @@ func main() {
 	}
 }
 
+// 协程保证多client并发连接并打印收到的消息、发送相同消息给client
 func handleConnection(conn net.Conn, accepted int) { 
 	bufread := bufio.NewReader(conn)
 	buf := make([]byte, 1024)
