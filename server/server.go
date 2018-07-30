@@ -15,7 +15,7 @@ func main() {
 		log.Fatalf("Listen error: %s\n", err)
 	}
 
-
+	accepted := 0 
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
@@ -23,11 +23,12 @@ func main() {
 			log.Printf("Accept error: %s\n", err)
 			continue
 		}
-		go handleConnection(conn)
+		accepted++
+		go handleConnection(conn, accepted)
 	}
 }
 
-func handleConnection(conn net.Conn) { 
+func handleConnection(conn net.Conn, accepted int) { 
 	bufread := bufio.NewReader(conn)
 	buf := make([]byte, 1024)
 
@@ -39,7 +40,7 @@ func handleConnection(conn net.Conn) {
 			conn.Close()
 			return
 		}
-		log.Printf("My data:%s\n", string(buf[:readByte]))
+		log.Printf("Client%d data:%s\n", accepted, string(buf[:readByte]))
 		conn.Write([]byte("Echo data:\n"+string(buf[:readByte])))
 	}
 }
