@@ -40,7 +40,7 @@ func handleConnection(conn net.Conn, accepted int) {
 			conn.Close()
 			return
 		}
-		log.Printf("Client%d data:%s\n", accepted, string(buf[:readByte]))
-		conn.Write([]byte("Echo data:\n"+string(buf[:readByte])))
+		log.Printf("Client%d data:%s", accepted, string(buf[:readByte]))
+		conn.Write([]byte("Server echo data:" + string(buf[:readByte])))
 	}
 }
